@@ -41,3 +41,52 @@
 //조금 변형하면 n을 6으로 나누어 떨어지는지 보고 역으로 계산해나가면 배열이 필요없을 지도...
 //알고리즘 시간은 O(log n)이 나올듯....
 //메모리도 4*N byte쓰겠네....
+
+
+//정답입니다. 5024kb, 4ms
+#include <stdio.h>
+#include <malloc.h>
+
+int main(){
+    int number = 0;
+    int num_1, num_2, num_3;
+    int i = 1; 
+    scanf("%d", &number);
+    int* min_arr = (int*)malloc(sizeof(int)*number+1);
+    min_arr[1]=0;
+
+    for(i=2; i<=number; i++){
+        num_1 = min_arr[i-1]+1;
+        if(i%3 == 0){
+            num_3 = min_arr[i/3]+1;
+            num_2 = 1000000;
+        }
+        else if(i%2 == 0){ 
+            num_3 = 1000000;
+            num_2 =min_arr[i/2]+1;
+        }
+        else{
+            num_2 = 1000000;
+            num_3 = 1000000;
+        }
+
+        //최솟값구하기, 안멋있음.
+        // if(num_1 <= num_2 && num_1<=num_3){
+        //     min_arr[i]=num_1;
+        // }
+        // else if(num_2<=num_1 && num_2<=num_3){
+        //     min_arr[i]=num_2;
+        // }
+        // else if(num_3<=num_1 && num_3<=num_2){
+        //     min_arr[i]=num_3;
+        // }   
+
+        //간단하게 원리는 우선순위 큐 같이...
+        if(num_1>num_2) num_1 = num_2;
+        if(num_1>num_3) num_1= num_3;
+
+        min_arr[i]= num_1;     
+    }
+
+    printf("%d", min_arr[number]);
+}
